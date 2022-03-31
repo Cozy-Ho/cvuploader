@@ -1,4 +1,5 @@
 release/app
+.DS_Store
 
 # Logs
 logs
