@@ -1,15 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": [
-      "DOM",
-      "es2017",
-      "esnext.asynciterable"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ],
+    "target": "es2021",
+    "lib": ["DOM", "es2021", "esnext.asynciterable"],
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -18,20 +11,23 @@
     "module": "commonjs",
     "pretty": true,
     "sourceMap": true,
-    "outDir": "./build",
+    "outDir": "release/app/dist",
+    "jsx": "react-jsx",
     "allowJs": true,
     "noEmit": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "./src/**/*"
-  ],
+  "include": ["./src/**/*", "src/**/*.tsx"],
   "exclude": [
     "node_modules",
-    "tests"
+    "test",
+    "release/build",
+    "release/app/dist",
+    ".webpack/dll"
   ]
 }

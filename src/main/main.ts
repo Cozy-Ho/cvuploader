@@ -1,18 +1,36 @@
+// /**
+//  * PRE-requisite function.
+//  *
+//  * check env files and set module import method.
+//  */
+// import dotenv from "dotenv";
+// const envFound = dotenv.config();
+// if (envFound.error) {
+//   throw new Error("Could't find .env file... ");
+// }
+
+// import moduleAlias from "module-alias";
+// moduleAlias.addAlias("@", __dirname);
+
+/**
+ * Main Loop here.
+ */
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import { app, BrowserWindow, shell, ipcMain } from "electron";
 import path from "path";
 import { autoUpdater } from "electron-updater";
-import { resolveHtmlPath } from "./util";
+import log from "electron-log";
 import MenuBuilder from "./menu";
+import { resolveHtmlPath } from "./util";
 
 export default class AppUpdater {
   constructor() {
-    // log.transports.file.level = 'info';
-    // autoUpdater.logger = log;
+    log.transports.file.level = "info";
+    autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
-
-const isDevelopment = process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -22,16 +40,17 @@ ipcMain.on("ipc-example", async (event, arg) => {
   event.reply("ipc-example", msgTemplate("pong"));
 });
 
-// app.on("ready", () => {
-//   window = new BrowserWindow({
-//     width: 800,
-//     height: 600,
-//     webPreferences: {
-//       nodeIntegration: true
-//     }
-//   });
-//   window.loadFile(__dirname + "/index.html");
-// });
+if (process.env.NODE_ENV === "production") {
+  const sourceMapSupport = require("source-map-support");
+  sourceMapSupport.install();
+}
+
+const isDevelopment =
+  process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true";
+
+if (isDevelopment) {
+  require("electron-debug")();
+}
 
 const installExtensions = async () => {
   const installer = require("electron-devtools-installer");
@@ -65,7 +84,7 @@ async function createWindow() {
     height: 720,
     icon: getAssetPath("icon.png"),
     webPreferences: {
-      nodeIntegration: true
+      preload: path.join(__dirname, "preload.js")
     }
   });
 

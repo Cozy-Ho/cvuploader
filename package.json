@@ -1,15 +1,24 @@
 {
   "name": "cvuploader",
   "version": "1.0.0",
-  "main": "build/standalone.js",
   "license": "MIT",
   "scripts": {
-    "build:clean": "rm -rf build",
-    "build:compile": "tsc --build",
-    "build:views": "cp -r src/renderer build",
-    "build": "run-s build:clean build:compile build:views",
-    "make": "electron-builder",
+    "config:clean": "rm -f ./.env",
+    "config:default": "cp -av envs/default.env .env",
+    "config:release": "cp -av envs/release.env .env",
+    "build:clean": "rm -rf release/build",
+    "build:main": "run-s webpack:main",
+    "build:renderer": "run-s webpack:renderer",
+    "build": "run-s build:clean build:main build:renderer",
+    "publish": "electron-builder build --publish never",
+    "package": "run-s config:clean config:release build publish",
+    "postinstall": "ts-node ./scripts/check-native-dep.ts && electron-builder install-app-deps && cross-env NODE_ENV=development webpack --config ./.webpack/webpack.config.renderer.dll.ts",
+    "webpack:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.webpack/webpack.config.main.prod.ts",
+    "webpack:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.webpack/webpack.config.renderer.prod.ts",
+    "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./src/main/main.ts",
+    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.webpack/webpack.config.renderer.ts",
     "start:daemon": "electron .",
+    "start": "run-s config:clean config:default start:renderer",
     "start:local": "run-s build start:daemon"
   },
   "build": {
@@ -18,7 +27,7 @@
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
-      "build",
+      "dist",
       "node_modules",
       "package.json"
     ],
@@ -52,8 +61,13 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "zip"
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "linux": {
       "target": [
@@ -62,9 +76,9 @@
       "category": "Development"
     },
     "directories": {
-      "app": ".",
+      "app": "release/app",
       "buildResources": "assets",
-      "output": "release/app"
+      "output": "release/build"
     },
     "extraResources": [
       "./assets/**"
@@ -75,12 +89,48 @@
     "email": "kj2693119@gmail.com"
   },
   "devDependencies": {
-    "electron": "^18.0.1",
+    "@types/chalk": "^2.2.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/electron-devtools-installer": "^2.2.1",
+    "@types/module-alias": "^2.0.1",
+    "@types/node": "^17.0.23",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "@types/terser-webpack-plugin": "^5.2.0",
+    "core-js": "^3.21.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "electron": "^17.1.0",
     "electron-builder": "^23.0.3",
-    "typescript": "^4.6.2"
+    "electron-devtools-installer": "^3.2.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "ts-loader": "^9.2.8",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.60.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.4.4",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "chalk": "^4.1.2",
+    "dotenv": "^16.0.0",
+    "electron-debug": "^3.2.0",
+    "electron-log": "^4.4.6",
     "electron-updater": "^4.6.5",
-    "npm-run-all": "^4.1.5"
+    "module-alias": "^2.2.2",
+    "npm-run-all": "^4.1.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "regenerator-runtime": "^0.13.9"
+  },
+  "devEngines": {
+    "node": ">=14.x",
+    "npm": ">=7.x"
   }
 }
