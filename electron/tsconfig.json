@@ -10,7 +10,7 @@
     "module": "commonjs",
     "pretty": true,
     "sourceMap": false,
-    "outDir": "./build",
+    "outDir": "../build",
     "allowJs": true,
     "noEmit": false,
     "esModuleInterop": true,
@@ -22,8 +22,7 @@
     "strict": false,
     "incremental": true,
     "resolveJsonModule": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve"
   },
-  "include": ["src", "electron"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["."]
 }
