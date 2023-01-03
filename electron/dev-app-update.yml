@@ -1,3 +1,4 @@
+version: 0.0.0
 owner: cozy-ho
 repo: cvuploader
 provider: github
