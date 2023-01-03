@@ -10,69 +10,10 @@
  */
 // import 'core-js/stable';
 import "regenerator-runtime/runtime";
-import ProgressBar from "electron-progressbar";
 import path from "path";
-import { app, BrowserWindow, shell, ipcMain, dialog } from "electron";
-import { autoUpdater } from "electron-updater";
-import log from "electron-log";
+import { app, BrowserWindow, shell, ipcMain } from "electron";
 import MenuBuilder from "./menu";
-import { resolveHtmlPath } from "./util";
-
-export default class AppUpdater {
-  progressBar: ProgressBar = null;
-  constructor() {
-    log.transports.file.level = "info";
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-
-    autoUpdater.on("update-available", () => {
-      dialog
-        .showMessageBox({
-          type: "info",
-          title: "update available",
-          message:
-            "A new version of Project is available. Do you want to update now?",
-          buttons: ["update", "later"]
-        })
-        .then(result => {
-          const buttonIndex = result.response;
-          if (buttonIndex === 0) autoUpdater.downloadUpdate();
-        });
-    });
-
-    autoUpdater.once("download-progress", progressObj => {
-      this.progressBar = new ProgressBar({
-        text: "Downloading...",
-        detail: "Downloading..."
-      });
-
-      this.progressBar
-        .on("completed", function () {
-          console.info(`completed...`);
-          this.progressBar.detail = "Task completed. Exiting...";
-        })
-        .on("aborted", function () {
-          console.info(`aborted...`);
-        });
-    });
-
-    autoUpdater.on("update-downloaded", () => {
-      this.progressBar.setCompleted();
-      dialog
-        .showMessageBox({
-          type: "info",
-          title: "Update ready",
-          message: "Install & restart now?",
-          buttons: ["Restart", "Later"]
-        })
-        .then(result => {
-          const buttonIndex = result.response;
-
-          if (buttonIndex === 0) autoUpdater.quitAndInstall(false, true);
-        });
-    });
-  }
-}
+import { Updater, resolveHtmlPath } from "./util";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -153,14 +94,17 @@ const createWindow = async () => {
   menuBuilder.buildMenu();
 
   // Open urls in the user's browser
-  mainWindow.webContents.on("new-window", (handler, url) => {
-    handler.preventDefault();
-    shell.openExternal(url);
+  mainWindow.webContents.setWindowOpenHandler(handler => {
+    // handler.preventDefault();
+    // shell.openExternal(handler.url);
+    if (handler.disposition === "new-window") {
+      return { action: "allow" };
+    }
   });
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
+  // mainWindow.webContents.on("new-window", (handler, url) => {
+  //   handler.preventDefault();
+  //   shell.openExternal(url);
+  // });
 };
 
 /**
@@ -179,6 +123,10 @@ app
   .whenReady()
   .then(() => {
     createWindow();
+
+    // Remove this if your app does not use auto updates
+    new Updater();
+
     app.on("activate", () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
