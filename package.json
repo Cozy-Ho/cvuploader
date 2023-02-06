@@ -1,47 +1,59 @@
 {
   "name": "cvuploader",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "./build/main.js",
+  "homepage": "./",
+  "module": "esnext",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --build ./electron && vite build",
+    "build:clean": "rm -rf ./build",
+    "build:main": "tsc --build ./electron",
+    "build:renderer": "vite build",
+    "build": "run-s build:clean build:main build:renderer",
     "preview": "vite preview",
     "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./electron/main.ts",
-    "package": "yarn build && electron-builder -mwl --publish always",
+    "package": "yarn build && electron-builder -mw --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "electron-log": "^4.4.8",
     "electron-progressbar": "^2.0.1",
     "electron-updater": "^5.3.0",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.0",
     "regenerator-runtime": "^0.13.11"
   },
   "devDependencies": {
     "@types/electron-progressbar": "^1.2.2",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
+    "@types/regenerator-runtime": "^0.13.1",
+    "@types/source-map-support": "^0.5.6",
     "@vitejs/plugin-react": "^3.0.0",
     "cross-env": "^7.0.3",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.2.0",
-    "electron-log": "^4.4.8",
+    "npm-run-all": "^4.1.5",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"
   },
   "build": {
-    "productName": "CVUPLOADER",
+    "productName": "cvuploader",
     "appId": "com.vatech.cvuploader",
-    "publish": {
-      "provider": "github"
-    },
-    "asar": false,
+    "files": [
+      "./build"
+    ],
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
     "mac": {
       "category": "public.app-category.productivity",
       "target": {
@@ -73,9 +85,7 @@
     },
     "win": {
       "target": [
-        "nsis",
-        "x64",
-        "ia32"
+        "nsis"
       ],
       "icon": "build/icon.png"
     },
@@ -86,12 +96,9 @@
       "category": "Development"
     },
     "directories": {
-      "buildResources": "electron/resources",
-      "output": "release"
-    },
-    "extraResources": [
-      "./electron/resources/**"
-    ]
+      "buildResources": "./build",
+      "output": "./release"
+    }
   },
   "repository": {
     "type": "git",

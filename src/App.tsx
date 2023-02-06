@@ -1,33 +1,26 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import { Stack, Header, Main, Select, NotFound } from "@/components";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  console.log("localstorage test # ", localStorage.getItem("test"));
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount(count => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <Stack
+      width={"100%"}
+      height={"calc(100vh - 24px)"}
+      direction={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <HashRouter>
+        <Header />
+        <Routes>
+          <Route path={"/"} element={<Main />} index={true} />
+          <Route path={"/1"} element={<Select />} />
+          <Route path={"/2"} element={<Select />} />
+          <Route path={"*"} element={<NotFound />} />
+        </Routes>
+      </HashRouter>
+    </Stack>
   );
 }
 

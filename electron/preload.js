@@ -18,6 +18,6 @@ contextBridge.exposeInMainWorld("electron", {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (event, ...args) => func(...args));
       }
-    }
-  }
+    },
+  },
 });

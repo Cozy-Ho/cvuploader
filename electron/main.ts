@@ -8,10 +8,9 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-// import 'core-js/stable';
-import "regenerator-runtime/runtime";
+import "regenerator-runtime";
 import path from "path";
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import MenuBuilder from "./menu";
 import { Updater, resolveHtmlPath } from "./util";
 
@@ -24,8 +23,9 @@ ipcMain.on("ipc-example", async (event, arg) => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  const sourceMapSupport = require("source-map-support");
-  sourceMapSupport.install();
+  // import("source-map-support").then(sourceMapSupport => {
+  //   sourceMapSupport.install();
+  // });
 }
 
 // FIXME: 개발용
@@ -33,18 +33,21 @@ const isDevelopment =
   process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true";
 
 if (isDevelopment) {
-  require("electron-debug")();
+  //
+  import("electron-debug").then(res => {
+    res.default();
+  });
 }
 
 const installExtensions = async () => {
-  const installer = require("electron-devtools-installer");
+  const installer = await import("electron-devtools-installer");
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ["REACT_DEVELOPER_TOOLS"];
 
   return installer
     .default(
       extensions.map(name => installer[name]),
-      forceDownload
+      forceDownload,
     )
     .catch(console.log);
 };
@@ -54,9 +57,7 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, "./")
-    : path.join(__dirname, "../public");
+  const RESOURCES_PATH = path.join(__dirname, "./assets");
 
   const getAssetPath = (...paths: string[]): string => {
     console.log("check here", RESOURCES_PATH);
@@ -65,12 +66,12 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
+    width: 900,
     height: 720,
     icon: getAssetPath("icon.png"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.js")
-    }
+      preload: path.join(__dirname, "./preload.js"),
+    },
   });
 
   mainWindow.loadURL(resolveHtmlPath("index.html"));
@@ -84,6 +85,8 @@ const createWindow = async () => {
     } else {
       mainWindow.show();
     }
+    // Open Dev tools when packaged.
+    // mainWindow.webContents.openDevTools();
   });
 
   mainWindow.on("closed", () => {

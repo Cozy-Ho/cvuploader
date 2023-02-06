@@ -11,13 +11,13 @@ export let resolveHtmlPath: (htmlFileName: string) => string;
 if (process.env.NODE_ENV === "development") {
   const port = process.env.PORT || 9702;
   resolveHtmlPath = (htmlFileName: string) => {
-    const url = new URL(`http://localhost:${port}`);
-    url.pathname = htmlFileName;
+    const url = new URL(`http://localhost:${port}/`);
+    // url.pathname = htmlFileName;
     return url.href;
   };
 } else {
   resolveHtmlPath = (htmlFileName: string) => {
-    return `file://${path.resolve(__dirname, htmlFileName)}`;
+    return `file://${path.join(__dirname, htmlFileName)}`;
   };
 }
 
@@ -30,10 +30,6 @@ class Updater {
 
     autoUpdater.forceDevUpdateConfig = true;
 
-    autoUpdater.on("checking-for-update", () => {
-      log.info("없데이트 확인중...");
-    });
-
     autoUpdater.on("update-available", () => {
       dialog
         .showMessageBox({
@@ -41,7 +37,7 @@ class Updater {
           title: "update available",
           message:
             "A new version of Project is available. Do you want to update now?",
-          buttons: ["update", "later"]
+          buttons: ["update", "later"],
         })
         .then(result => {
           const buttonIndex = result.response;
@@ -52,7 +48,7 @@ class Updater {
     autoUpdater.once("download-progress", progressObj => {
       this.progressBar = new ProgressBar({
         text: "Downloading...",
-        detail: "Downloading..."
+        detail: "Downloading...",
       });
 
       this.progressBar
@@ -72,7 +68,7 @@ class Updater {
           type: "info",
           title: "Update ready",
           message: "Install & restart now?",
-          buttons: ["Restart", "Later"]
+          buttons: ["Restart", "Later"],
         })
         .then(result => {
           const buttonIndex = result.response;
