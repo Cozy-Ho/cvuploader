@@ -1,13 +1,18 @@
-/* eslint global-require: off, no-console: off, promise/always-return: off */
-
 /**
- * This module executes inside of electron's main process. You can start
- * electron renderer process from here and communicate with the other processes
- * through IPC.
+ * PRE-requisite function.
  *
- * When running `npm run build` or `npm run build:main`, this file is compiled to
- * `./src/main.js` using webpack. This gives us some performance wins.
+ * check env files and set module import method.
  */
+import dotenv from "dotenv";
+dotenv.config();
+
+const envFound = dotenv.config();
+
+if (envFound.error) {
+  console.error(`Could't finf .env file`);
+  throw new Error(" Could't find .env file... ");
+}
+
 import "regenerator-runtime";
 import path from "path";
 import { app, BrowserWindow, ipcMain } from "electron";
@@ -18,14 +23,14 @@ let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on("ipc-example", async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
+  console.log("arg # ", arg);
   event.reply("ipc-example", msgTemplate("pong"));
 });
 
 if (process.env.NODE_ENV === "production") {
-  // import("source-map-support").then(sourceMapSupport => {
-  //   sourceMapSupport.install();
-  // });
+  import("source-map-support").then(sourceMapSupport => {
+    sourceMapSupport.install();
+  });
 }
 
 // FIXME: 개발용
@@ -60,7 +65,6 @@ const createWindow = async () => {
   const RESOURCES_PATH = path.join(__dirname, "./assets");
 
   const getAssetPath = (...paths: string[]): string => {
-    console.log("check here", RESOURCES_PATH);
     return path.join(RESOURCES_PATH, ...paths);
   };
 
@@ -70,7 +74,7 @@ const createWindow = async () => {
     height: 720,
     icon: getAssetPath("icon.png"),
     webPreferences: {
-      preload: path.join(__dirname, "./preload.js"),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 

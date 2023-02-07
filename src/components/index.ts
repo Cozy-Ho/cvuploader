@@ -5,5 +5,17 @@ import NotFound from "./NotFound";
 import Select from "./Select";
 import Header from "./Header";
 import ContentsBox from "./ContentsBox";
+import LocaleUpload from "./LocaleUpload";
+import ManualUpload from "./ManualUpload";
 
-export { Stack, ContentsBox, Header, Loading, Main, NotFound, Select };
+export {
+  Stack,
+  ContentsBox,
+  LocaleUpload,
+  ManualUpload,
+  Header,
+  Loading,
+  Main,
+  NotFound,
+  Select,
+};
