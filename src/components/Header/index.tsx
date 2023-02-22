@@ -10,8 +10,13 @@ const Header = () => {
   return (
     <Stack>
       {location.pathname !== "/" && (
-        <div>
+        <div
+          style={{
+            userSelect: "none",
+          }}
+        >
           <Link
+            draggable={false}
             to={"/"}
             style={{
               textDecoration: "none",
@@ -22,7 +27,7 @@ const Header = () => {
               padding: 8,
             }}
           >
-            <img src={"vite.svg"} />
+            <img src={"vite.svg"} draggable={false} />
           </Link>
           <button
             style={{
