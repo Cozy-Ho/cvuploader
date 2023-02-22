@@ -56,6 +56,7 @@ const SelectFile = () => {
       style={{
         border: isDragging ? `4px dashed white` : `unset`,
         borderRadius: `16px`,
+        cursor: "pointer",
       }}
     >
       {isDragging ? (
