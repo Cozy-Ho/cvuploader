@@ -8,8 +8,9 @@
     "dev": "vite",
     "build:clean": "rm -rf ./build",
     "build:main": "tsc --build ./electron",
+    "build:env": "cp -av .env ./build",
     "build:renderer": "vite build",
-    "build": "run-s build:clean build:main build:renderer",
+    "build": "run-s build:clean build:main build:renderer build:env",
     "preview": "vite preview",
     "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./electron/main.ts",
     "package": "yarn build && electron-builder -mw --publish never",
@@ -50,7 +51,8 @@
     "productName": "cvuploader",
     "appId": "com.vatech.cvuploader",
     "files": [
-      "./build"
+      "./build",
+      ".env"
     ],
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",

@@ -1,10 +1,25 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContentsBox from "../ContentsBox";
 import Stack from "../Stack";
+import SelectFile from "./SelectFile";
+
+type CurStage = "fileUpload" | "region" | "language" | "type";
+
+type SelectData = {
+  id: string;
+  value: string;
+  name: string;
+};
+
+// const SelectValue:SelectData[] = [
+//   {id: }
+// ]
 
 const ManualUpload = () => {
   const navigate = useNavigate();
 
+  const [curStage, setcurStage] = useState<CurStage>("fileUpload");
   //
   return (
     <ContentsBox>
@@ -13,18 +28,9 @@ const ManualUpload = () => {
         direction={"column"}
         justifyContent={"center"}
         alignItems={"center"}
+        spacing={1}
       >
-        <li>
-          <ul>
-            <p></p>
-          </ul>
-          <ul>
-            <p></p>
-          </ul>
-          <ul>
-            <p></p>
-          </ul>
-        </li>
+        {curStage === "fileUpload" && <SelectFile />}
       </Stack>
     </ContentsBox>
   );
