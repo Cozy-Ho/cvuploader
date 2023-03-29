@@ -5,7 +5,6 @@ import LocaleUpload from "./LocaleUpload";
 import Main from "./Main";
 import InputArea from "./InputArea";
 import NotFound from "./NotFound";
-import Select from "./Select";
 import Stack from "./Stack";
 
 export {
@@ -16,6 +15,5 @@ export {
   Main,
   InputArea,
   NotFound,
-  Select,
   Stack,
 };

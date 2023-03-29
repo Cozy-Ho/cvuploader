@@ -19,11 +19,11 @@ const Main = (props: Props) => {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Stack width={"60%"} fullHeight>
+        <Stack width={"45%"} fullHeight>
           <InputArea state={state} handleDispatch={handleDispatch} />
         </Stack>
         <Divider direction={"column"} />
-        <Stack width={"40%"} fullHeight>
+        <Stack width={"55%"} fullHeight>
           <DisplayArea state={state} />
         </Stack>
       </Stack>

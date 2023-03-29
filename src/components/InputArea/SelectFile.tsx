@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import Stack from "../Stack";
-import { ManualAction, ManualState, StageList } from "./ManualReducer";
+import { Action, State } from "@/AppReducer";
 
 type Props = {
-  state: ManualState;
-  handleDispatch: (action: ManualAction) => void;
+  state: State;
+  handleDispatch: (action: Action) => void;
 };
 
 const SelectFile = (props: Props) => {
@@ -34,12 +34,11 @@ const SelectFile = (props: Props) => {
       return;
     }
     handleDispatch({
-      type: "UPDATE_TARGET_FILE",
-      inputFile: e.dataTransfer.files[0],
-    });
-    handleDispatch({
-      type: "UPDATE_CUR_STAGE",
-      inputStage: StageList[state.curStage.next],
+      type: "UPDATE_STAGE_DATA",
+      data: {
+        ...state.stageData,
+        file: e.dataTransfer.files[0],
+      },
     });
   };
 
@@ -54,20 +53,18 @@ const SelectFile = (props: Props) => {
     if (e.target.files.length) {
       // const inputFile = e.target.files[0];
       handleDispatch({
-        type: "UPDATE_TARGET_FILE",
-        inputFile: e.target.files[0],
-      });
-      handleDispatch({
-        type: "UPDATE_CUR_STAGE",
-        inputStage: StageList[state.curStage.next],
+        type: "UPDATE_STAGE_DATA",
+        data: {
+          ...state.stageData,
+          file: e.target.files[0],
+        },
       });
     }
   };
 
   return (
     <Stack
-      width={"85%"}
-      height={"80%"}
+      height={"45%"}
       justifyContent={"center"}
       alignItems={"center"}
       onDrop={handleDrop}
@@ -82,9 +79,10 @@ const SelectFile = (props: Props) => {
       }}
       onClick={handleClick}
       style={{
-        border: isDragging ? `4px dashed white` : `unset`,
+        border: `2px dashed #adadad`,
         borderRadius: `16px`,
         cursor: "pointer",
+        margin: 16,
       }}
     >
       {isDragging ? (

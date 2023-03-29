@@ -1,25 +1,53 @@
 type Language = "en" | "eg" | "ru" | "vn";
+type Region =
+  | "all"
+  | "Egypt"
+  | "Egypt-QA"
+  | "Vietnam"
+  | "Vietnam-QA"
+  | "Russia"
+  | "Russia-QA"
+  | "develop";
 
-const UploadFileList = {
-  installation: "installation (설치프로그램)",
-  smtp: "smtp (SMTP 설정)",
-  manager_smtp: "manager smtp (매니저 SMTP 설정)",
-  clever: "Clever (유저 매뉴얼)",
-  cyber_lotus: "cyberLotus (Zalo)",
-  viewer: "viewer (뷰어)",
-  zalo: "zalo (Zalo)",
-  termination_agreement: "termination_agreement (해지약관)",
-  open_source_software_license: "open_source_license (오픈소스 라이센스)",
-  terms_of_use: "이용약관",
-  application_form: "이용신청서",
-  processing_of_personal_information_policy: "개인정보 처리방침",
-  personal_information_collection_and_usage_agreement:
-    "개인정보 수집, 이용동의서 (병원용)",
-  collect_and_use_personal_data_for_staff: "개인정보 수집, 이용동이서 (직원용)",
-  consignment_of_personal_information_collected: "개인정보 처리 위탁 계약서",
-} as const;
+type UploadFileType = {
+  key: string;
+  value: string;
+};
 
-type UploadFileType = keyof typeof UploadFileList;
+const UploadFileList = [
+  { key: "installation", value: "installation (설치프로그램)" },
+  { key: "smtp", value: "smtp (SMTP 설정)" },
+  { key: "manager_smtp", value: "manager smtp (매니저 SMTP 설정)" },
+  { key: "clever", value: "Clever (유저 매뉴얼)" },
+  { key: "cyber_lotus", value: "cyberLotus (Zalo)" },
+  { key: "viewer", value: "viewer (뷰어)" },
+  { key: "zalo", value: "zalo (Zalo)" },
+  { key: "termination_agreement", value: "termination_agreement (해지약관)" },
+  {
+    key: "open_source_software_license",
+    value: "open_source_license (오픈소스 라이센스)",
+  },
+  { key: "terms_of_use", value: "이용약관" },
+  { key: "application_form", value: "이용신청서" },
+  {
+    key: "processing_of_personal_information_policy",
+    value: "개인정보 처리방침",
+  },
+  {
+    key: "personal_information_collection_and_usage_agreement",
+    value: "개인정보 수집, 이용동의서 (병원용)",
+  },
+  {
+    key: "collect_and_use_personal_data_for_staff",
+    value: "개인정보 수집, 이용동이서 (직원용)",
+  },
+  {
+    key: "consignment_of_personal_information_collected",
+    value: "개인정보 처리 위탁 계약서",
+  },
+];
+
+type UploadFileKey = typeof UploadFileList[number]["key"];
 
 type UploadData = {
   id: string;
@@ -64,5 +92,5 @@ const INIT_STATE = {
   stageData: null,
 };
 
-export type { UploadData, UploadFileType, Language, State, Action };
+export type { UploadData, UploadFileType, Language, State, Action, Region };
 export { UploadFileList, reducer, INIT_STATE };

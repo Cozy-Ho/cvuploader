@@ -12,7 +12,7 @@ interface ContentsBoxProps {
 const ContentsBox = styled(Stack, {
   shouldForwardProp: shouldForwardProp([]),
 })<ContentsBoxProps>(({ width, height, justifyContent, alignItems }) => ({
-  width: width ? width : 800,
+  width: width ? width : 900,
   height: height ? height : 600,
   justifyContent: justifyContent,
   alignItems: alignItems,
