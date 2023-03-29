@@ -1,6 +1,8 @@
 import { State } from "@/AppReducer";
 import Stack from "../Stack";
 import styled from "@emotion/styled";
+import FileInfoBox from "./FileInfoBox";
+import Divider from "../Divider";
 
 type Props = {
   state: State;
@@ -36,17 +38,11 @@ const DisplayArea = (props: Props) => {
     >
       <div style={{ fontSize: 12 }}>{"# 현재 업로드 준비중"}</div>
       <StyledDiv>
-        <Stack direction={"column"}>
-          <div>type: {stageData?.type}</div>
-          <div>language: {stageData?.language}</div>
-          <div>region: {stageData?.region}</div>
-        </Stack>
+        <FileInfoBox data={stageData} />
       </StyledDiv>
-      <div
+      <Divider
+        direction={"row"}
         style={{
-          width: "100%",
-          height: 1,
-          backgroundColor: "#fff",
           margin: "16px 0",
         }}
       />
@@ -54,11 +50,7 @@ const DisplayArea = (props: Props) => {
       {uploadData.map(item => {
         return (
           <StyledDiv key={item.id}>
-            <Stack direction={"column"}>
-              <div>type: {item.type}</div>
-              <div>language: {item.language}</div>
-              <div>region: {item.region}</div>
-            </Stack>
+            <FileInfoBox data={item} />
           </StyledDiv>
         );
       })}

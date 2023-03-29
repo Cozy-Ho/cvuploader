@@ -1,6 +1,7 @@
 import { Action, State } from "@/AppReducer";
 import { ContentsBox, InputArea, Stack } from "@/components";
 import DisplayArea from "../DisplayArea";
+import Divider from "../Divider";
 
 type Props = {
   state: State;
@@ -21,13 +22,7 @@ const Main = (props: Props) => {
         <Stack width={"60%"} fullHeight>
           <InputArea state={state} handleDispatch={handleDispatch} />
         </Stack>
-        <div
-          style={{
-            width: 1,
-            height: "100%",
-            backgroundColor: "#fff",
-          }}
-        />
+        <Divider direction={"column"} />
         <Stack width={"40%"} fullHeight>
           <DisplayArea state={state} />
         </Stack>

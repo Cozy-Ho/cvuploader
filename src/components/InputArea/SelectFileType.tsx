@@ -1,17 +1,6 @@
-import styled from "@emotion/styled";
 import { Action, State, UploadFileList, UploadFileType } from "@/AppReducer";
 import Stack from "../Stack";
 import { ScalarStage } from "./type";
-
-const StyledOption = styled("option")({
-  height: 30,
-  width: "100%",
-  fontSize: 14,
-  color: "#fff",
-  backgroundColor: "#292929",
-  border: "1px solid #E9E9E9",
-  borderRadius: 4,
-});
 
 type Props = {
   state: State;
@@ -44,7 +33,6 @@ const SelectFileType = (props: Props) => {
       <select
         name="fileType"
         id="fileType"
-        placeholder={"파일 타입을 선택해주세요."}
         defaultValue={null}
         style={{
           appearance: "none",
@@ -60,11 +48,14 @@ const SelectFileType = (props: Props) => {
         }}
         onChange={handleChangeSelect}
       >
+        <option value={""} disabled selected>
+          {"파일 타입을 선택해주세요."}
+        </option>
         {Object.keys(UploadFileList).map(key => {
           return (
-            <StyledOption key={key} value={key}>
+            <option key={key} value={key}>
               {UploadFileList[key]}
-            </StyledOption>
+            </option>
           );
         })}
       </select>
