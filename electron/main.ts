@@ -8,7 +8,7 @@ dotenv.config();
 
 const envFound = dotenv.config();
 
-if (envFound.error) {
+if (process.env.NODE_ENV === "development" && envFound.error) {
   console.error(`Could't finf .env file`);
   throw new Error(" Could't find .env file... ");
 }
@@ -90,7 +90,7 @@ const createWindow = async () => {
       mainWindow.show();
     }
     // Open Dev tools when packaged.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   });
 
   mainWindow.on("closed", () => {

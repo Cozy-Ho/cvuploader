@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Stack } from "@/components";
+import Stack from "../Stack";
 import { shouldForwardProp } from "@/utils/emotion";
 
 interface ContentsBoxProps {
@@ -12,8 +12,8 @@ interface ContentsBoxProps {
 const ContentsBox = styled(Stack, {
   shouldForwardProp: shouldForwardProp([]),
 })<ContentsBoxProps>(({ width, height, justifyContent, alignItems }) => ({
-  width: width ? width : 700,
-  height: height ? height : 500,
+  width: width ? width : 800,
+  height: height ? height : 600,
   justifyContent: justifyContent,
   alignItems: alignItems,
   marginTop: 48,

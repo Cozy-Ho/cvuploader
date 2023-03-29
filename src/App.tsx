@@ -1,15 +1,6 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
-
-import {
-  Stack,
-  Header,
-  Main,
-  Select,
-  NotFound,
-  LocaleUpload,
-  ManualUpload,
-} from "@/components";
-import { useEffect } from "react";
+import { Header, Main, Stack } from "@/components";
+import { useCallback, useEffect, useReducer } from "react";
+import { Action, INIT_STATE, reducer } from "./AppReducer";
 
 function App() {
   console.log("localstorage test # ", localStorage.getItem("test"));
@@ -24,6 +15,16 @@ function App() {
   window.electron.receive("ipc-example", args => {
     console.log(args);
   });
+
+  const [state, dispatch] = useReducer(reducer, INIT_STATE);
+
+  const handleDispatch = useCallback(
+    (action: Action) => {
+      dispatch(action);
+    },
+    [dispatch],
+  );
+
   return (
     <Stack
       width={"100%"}
@@ -32,15 +33,8 @@ function App() {
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <HashRouter>
-        <Header />
-        <Routes>
-          <Route path={"/"} element={<Main />} index={true} />
-          <Route path={"/1"} element={<LocaleUpload />} />
-          <Route path={"/2"} element={<ManualUpload />} />
-          <Route path={"*"} element={<NotFound />} />
-        </Routes>
-      </HashRouter>
+      <Header />
+      <Main state={state} handleDispatch={handleDispatch} />
     </Stack>
   );
 }

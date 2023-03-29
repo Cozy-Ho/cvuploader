@@ -1,42 +1,36 @@
-import { useNavigate } from "react-router-dom";
-import { ContentsBox, Stack } from "@/components";
+import { Action, State } from "@/AppReducer";
+import { ContentsBox, InputArea, Stack } from "@/components";
+import DisplayArea from "../DisplayArea";
 
-const Main = () => {
-  const navigate = useNavigate();
+type Props = {
+  state: State;
+  handleDispatch: (action: Action) => void;
+};
+
+const Main = (props: Props) => {
+  const { state, handleDispatch } = props;
   return (
     <ContentsBox justifyContent={"center"} alignItems={"center"}>
       <Stack
-        width={"50%"}
+        direction={"row"}
+        width={"100%"}
         height={"100%"}
         justifyContent={"center"}
         alignItems={"center"}
-        onClick={() => {
-          navigate("/1");
-        }}
-        style={{
-          backgroundColor: "#ffddfc",
-          borderRadius: "16px 0 0 16px",
-          // opacity: "0.5",
-          color: "black",
-        }}
       >
-        <h2>{"Locale"}</h2>
-      </Stack>
-      <Stack
-        width={"50%"}
-        height={"100%"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        onClick={() => {
-          navigate("/2");
-        }}
-        style={{
-          backgroundColor: "#bffffb",
-          borderRadius: "0 16px 16px 0",
-          color: "black",
-        }}
-      >
-        <h2>{"Manual"}</h2>
+        <Stack width={"60%"} fullHeight>
+          <InputArea state={state} handleDispatch={handleDispatch} />
+        </Stack>
+        <div
+          style={{
+            width: 1,
+            height: "100%",
+            backgroundColor: "#fff",
+          }}
+        />
+        <Stack width={"40%"} fullHeight>
+          <DisplayArea state={state} />
+        </Stack>
       </Stack>
     </ContentsBox>
   );

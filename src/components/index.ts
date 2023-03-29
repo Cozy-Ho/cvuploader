@@ -1,21 +1,21 @@
-import Stack from "./Stack";
+import ContentsBox from "./ContentsBox";
+import Header from "./Header";
 import Loading from "./Loading";
+import LocaleUpload from "./LocaleUpload";
 import Main from "./Main";
+import InputArea from "./InputArea";
 import NotFound from "./NotFound";
 import Select from "./Select";
-import Header from "./Header";
-import ContentsBox from "./ContentsBox";
-import LocaleUpload from "./LocaleUpload";
-import ManualUpload from "./ManualUpload";
+import Stack from "./Stack";
 
 export {
-  Stack,
   ContentsBox,
-  LocaleUpload,
-  ManualUpload,
   Header,
   Loading,
+  LocaleUpload,
   Main,
+  InputArea,
   NotFound,
   Select,
+  Stack,
 };

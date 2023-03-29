@@ -1,11 +1,23 @@
 import { useRef, useState } from "react";
 import Stack from "../Stack";
+import { ManualAction, ManualState, StageList } from "./ManualReducer";
 
-const SelectFile = () => {
+type Props = {
+  state: ManualState;
+  handleDispatch: (action: ManualAction) => void;
+};
+
+const SelectFile = (props: Props) => {
+  const { state, handleDispatch } = props;
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [stageFile, setStageFile] = useState<File | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const validateFiles = (input: FileList): boolean => {
+    if (input.length > 1) {
+      return false;
+    }
+  };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     //
@@ -19,7 +31,16 @@ const SelectFile = () => {
     setIsDragging(false);
     if (files.length > 1) {
       alert(`파일은 하나씩 !`);
+      return;
     }
+    handleDispatch({
+      type: "UPDATE_TARGET_FILE",
+      inputFile: e.dataTransfer.files[0],
+    });
+    handleDispatch({
+      type: "UPDATE_CUR_STAGE",
+      inputStage: StageList[state.curStage.next],
+    });
   };
 
   const handleClick = () => {
@@ -32,7 +53,14 @@ const SelectFile = () => {
     //
     if (e.target.files.length) {
       // const inputFile = e.target.files[0];
-      setStageFile(e.target.files[0]);
+      handleDispatch({
+        type: "UPDATE_TARGET_FILE",
+        inputFile: e.target.files[0],
+      });
+      handleDispatch({
+        type: "UPDATE_CUR_STAGE",
+        inputStage: StageList[state.curStage.next],
+      });
     }
   };
 
@@ -80,6 +108,7 @@ const SelectFile = () => {
       )}
       <input
         ref={inputRef}
+        accept={".pdf"}
         hidden={true}
         type={"file"}
         multiple={false}
