@@ -36,17 +36,17 @@ const DisplayArea = (props: Props) => {
         overflowY: "scroll",
       }}
     >
-      <div style={{ fontSize: 12 }}>{"# 현재 업로드 준비중"}</div>
-      <StyledDiv>
-        <FileInfoBox data={stageData} />
-      </StyledDiv>
-      <Divider
-        direction={"row"}
-        style={{
-          margin: "16px 0",
-        }}
-      />
-      <div style={{ fontSize: 12 }}>{`# 업로드 대기열 `}</div>
+      {uploadData.length < 1 && (
+        <Stack
+          direction={"column"}
+          fullHeight
+          justifyContent={"center"}
+          alignItems={"center"}
+          padding={8}
+        >
+          {"텅텅"}
+        </Stack>
+      )}
       {uploadData.map(item => {
         return (
           <StyledDiv key={item.id}>

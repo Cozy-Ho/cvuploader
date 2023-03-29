@@ -52,7 +52,7 @@ type UploadFileKey = typeof UploadFileList[number]["key"];
 type UploadData = {
   id: string;
   file: File;
-  region: string;
+  region: Region[];
   language: Language;
   type: UploadFileType;
 };

@@ -1,13 +1,14 @@
-import { Action, State } from "@/AppReducer";
+import { Action, Region, State } from "@/AppReducer";
 import Stack from "../Stack";
 import Select, { SelectType } from "../Select";
+import ServerMultiSelect from "../ServerMultiSelect";
 
 type Props = {
   state: State;
   handleDispatch: (action: Action) => void;
 };
 
-const SERVER_LIST: SelectType[] = [
+const SERVER_LIST: Region[] = [
   "all",
   "Egypt",
   "Egypt-QA",
@@ -16,32 +17,28 @@ const SERVER_LIST: SelectType[] = [
   "Russia",
   "Russia-QA",
   "develop",
-].map(item => ({
-  key: item,
-  value: item,
-}));
+];
 
 const ServerSelect = (props: Props) => {
   const { state, handleDispatch } = props;
   //
-  const handleOnChange = (data: string) => {
-    console.log(" >> e.target.value ", data);
+  const handleOnChange = (value: Region[], click: Region) => {
+    console.log(" >> e.target.value ", click);
     handleDispatch({
       type: "UPDATE_STAGE_DATA",
       data: {
         ...state.stageData,
-        region: data,
+        region: value,
       },
     });
   };
   return (
     <Stack padding={16} justifyContent={"space-between"} alignItems={"center"}>
       <div>{"Server"}</div>
-      <Select
-        data={SERVER_LIST}
-        placement={"top"}
+      <ServerMultiSelect
+        list={SERVER_LIST}
+        value={state.stageData?.region}
         onChange={handleOnChange}
-        value={SERVER_LIST.find(item => item.key === state.stageData?.region)}
       />
     </Stack>
   );

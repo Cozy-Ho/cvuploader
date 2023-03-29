@@ -1,4 +1,3 @@
-import { UploadFileType } from "@/AppReducer";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 
@@ -111,7 +110,7 @@ const Select = <T extends SelectType>(props: Props<T>) => {
 
   return (
     <StyledSelect onClick={handleChangeSelect} onBlur={handleBlur} tabIndex={1}>
-      <StyledP>{value ? value.value : data[0].value}</StyledP>
+      <StyledP>{value ? value.value : "선택 해 (주세요)"}</StyledP>
       {open && (
         <StyledUl placement={placement}>
           {data.map(item => {

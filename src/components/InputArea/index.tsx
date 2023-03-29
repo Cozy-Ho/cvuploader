@@ -1,10 +1,10 @@
 import { Action, State } from "@/AppReducer";
+import styled from "@emotion/styled";
 import Stack from "../Stack";
-import SelectFileType from "./SelectFileType";
 import LanguageSelect from "./LanguageSelect";
 import SelectFile from "./SelectFile";
+import SelectFileType from "./SelectFileType";
 import ServerSelect from "./ServerSelect";
-import styled from "@emotion/styled";
 
 const StyledButton = styled("button")({
   backgroundColor: "#a3a3a3",
@@ -41,9 +41,8 @@ const InputArea = (props: Props) => {
       <ServerSelect state={state} handleDispatch={handleDispatch} />
       <Stack
         justifyContent={"flex-end"}
-        padding={8}
         style={{
-          marginTop: 16,
+          margin: 16,
         }}
       >
         <StyledButton>{"Upload"}</StyledButton>
