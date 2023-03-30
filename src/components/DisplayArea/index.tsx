@@ -2,7 +2,6 @@ import { State } from "@/AppReducer";
 import Stack from "../Stack";
 import styled from "@emotion/styled";
 import FileInfoBox from "./FileInfoBox";
-import Divider from "../Divider";
 
 type Props = {
   state: State;
@@ -15,9 +14,8 @@ const StyledDiv = styled("div")({
   backgroundColor: "#292929",
   border: "1px solid #E9E9E9",
   borderRadius: 4,
-  padding: 2,
-  marginTop: 4,
-  marginBottom: 4,
+  padding: 4,
+  marginBottom: 8,
 });
 
 const DisplayArea = (props: Props) => {
@@ -31,11 +29,12 @@ const DisplayArea = (props: Props) => {
       fullWidth
       justifyContent={"flex-start"}
       alignItems={"center"}
-      padding={8}
+      padding={16}
       style={{
         overflowY: "scroll",
       }}
     >
+      <div>{"Done # "}</div>
       {uploadData.length < 1 && (
         <Stack
           direction={"column"}

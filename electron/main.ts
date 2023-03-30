@@ -13,18 +13,48 @@ if (process.env.NODE_ENV === "development" && envFound.error) {
   throw new Error(" Could't find .env file... ");
 }
 
-import "regenerator-runtime";
-import path from "path";
 import { app, BrowserWindow, ipcMain } from "electron";
+import fs from "fs";
+import path from "path";
+import "regenerator-runtime";
 import MenuBuilder from "./menu";
-import { Updater, resolveHtmlPath } from "./util";
+import { resolveHtmlPath, ServerConfig, Updater } from "./util";
+import * as minio from "minio";
 
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on("ipc-example", async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log("arg # ", arg);
+
   event.reply("ipc-example", msgTemplate("pong"));
+});
+
+ipcMain.on("upload-file", async (event, arg) => {
+  console.log("arg # ", arg);
+  const fileContent: Buffer = fs.readFileSync(arg.file);
+
+  try {
+    for (let i = 0; i < arg.region.length; i++) {
+      const curServer = ServerConfig[arg.region[i]];
+      const minioClient = new minio.Client({
+        endPoint: curServer.host,
+        port: curServer.port,
+        useSSL: curServer.useSSL,
+        accessKey: "haruband",
+        secretKey: "haru1004",
+      });
+
+      const result = await minioClient.putObject(
+        "dentalclever-documents",
+        `${arg.type}_${arg.lang}.pdf`,
+        fileContent,
+      );
+      console.log("result # ", result);
+    }
+    event.reply("upload-done", "done");
+  } catch (e) {
+    event.reply("upload-fail", "fail");
+  }
 });
 
 if (process.env.NODE_ENV === "production") {
@@ -74,7 +104,8 @@ const createWindow = async () => {
     height: 720,
     icon: getAssetPath("icon.png"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 

@@ -36,11 +36,12 @@ const Header = () => {
           userSelect: "none",
           textDecoration: "none",
           color: "#fff",
-          padding: 8,
+          padding: 16,
           cursor: "pointer",
         }}
         onClick={() => {
-          console.log(" >> click ");
+          console.log("click");
+          // window.location.reload();
         }}
       >
         <img src={"vite.svg"} draggable={false} />
@@ -51,7 +52,7 @@ const Header = () => {
         width={"20%"}
         style={{
           padding: 8,
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         }}
       >
         <HeaderButton
@@ -60,23 +61,7 @@ const Header = () => {
             //
           }}
         >
-          test
-        </HeaderButton>
-        <HeaderButton
-          width={56}
-          onClick={() => {
-            //
-          }}
-        >
-          test2
-        </HeaderButton>
-        <HeaderButton
-          width={56}
-          onClick={() => {
-            //
-          }}
-        >
-          test3
+          ?
         </HeaderButton>
       </Stack>
     </Stack>

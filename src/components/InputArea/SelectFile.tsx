@@ -11,6 +11,8 @@ const SelectFile = (props: Props) => {
   const { state, handleDispatch } = props;
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
+  const { stageData } = state;
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const validateFiles = (input: FileList): boolean => {
@@ -36,7 +38,7 @@ const SelectFile = (props: Props) => {
     handleDispatch({
       type: "UPDATE_STAGE_DATA",
       data: {
-        ...state.stageData,
+        ...stageData,
         file: e.dataTransfer.files[0],
       },
     });
@@ -55,7 +57,7 @@ const SelectFile = (props: Props) => {
       handleDispatch({
         type: "UPDATE_STAGE_DATA",
         data: {
-          ...state.stageData,
+          ...stageData,
           file: e.target.files[0],
         },
       });
@@ -95,14 +97,22 @@ const SelectFile = (props: Props) => {
           {">> 드롭 <<"}
         </p>
       ) : (
-        <p
-          style={{
-            userSelect: "none",
-            zIndex: -1,
-          }}
-        >
-          {">> 파일 드래그 / 클릭 <<"}
-        </p>
+        <>
+          {stageData?.file ? (
+            <Stack>
+              <div>{`${stageData?.file.name}`}</div>
+            </Stack>
+          ) : (
+            <p
+              style={{
+                userSelect: "none",
+                zIndex: -1,
+              }}
+            >
+              {">> 파일 드래그 / 클릭 <<"}
+            </p>
+          )}
+        </>
       )}
       <input
         ref={inputRef}

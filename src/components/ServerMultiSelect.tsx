@@ -31,12 +31,12 @@ const StyledUl = styled("ul")({
   zIndex: 100,
   listStyle: "none",
   position: "absolute",
-  top: -408,
+  top: -358,
   right: 0,
   margin: 0,
   padding: 0,
-  width: 350,
-  height: 400,
+  width: 300,
+  height: 350,
   fontSize: 14,
   color: "#fff",
   backgroundColor: "#292929",
@@ -134,8 +134,8 @@ const ServerMultiSelect = (props: Props) => {
   const [selected, setSelected] = useState<Region[]>(value || []);
 
   useEffect(() => {
-    if (open && value) {
-      setSelected(value);
+    if (open) {
+      setSelected(value || []);
     }
   }, [open, value]);
 
@@ -144,7 +144,6 @@ const ServerMultiSelect = (props: Props) => {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-    console.log("# blur!");
     setOpen(false);
   };
 
@@ -241,7 +240,7 @@ const ServerMultiSelect = (props: Props) => {
                 </StyledLi>
               );
             })}
-            <ApplyButton onMouseDown={handleClickApply}>Button</ApplyButton>
+            <ApplyButton onMouseDown={handleClickApply}>Apply</ApplyButton>
           </>
         </StyledUl>
       )}

@@ -7,7 +7,7 @@ type Region =
   | "Vietnam-QA"
   | "Russia"
   | "Russia-QA"
-  | "develop";
+  | "Develop";
 
 type UploadFileType = {
   key: string;
@@ -60,6 +60,7 @@ type UploadData = {
 type State = {
   uploadData: UploadData[];
   stageData: UploadData | null;
+  resetOnUpload: boolean;
 };
 
 type Action =
@@ -67,6 +68,8 @@ type Action =
   | { type: "ADD_UPLOAD_DATA"; data: UploadData }
   | { type: "UPDATE_STAGE_DATA"; data: UploadData }
   | { type: "REMOVE_UPLOAD_DATA"; id: string }
+  | { type: "RESET_STAGE_DATA" }
+  | { type: "UPDATE_RESET_ON_UPLOAD" }
   | { type: "REMOVE_ALL_UPLOAD_DATA" };
 
 const reducer = (state: State, action: Action): State => {
@@ -82,14 +85,19 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         uploadData: state.uploadData.filter(data => data.id !== action.id),
       };
+    case "RESET_STAGE_DATA":
+      return { ...state, stageData: null };
+    case "UPDATE_RESET_ON_UPLOAD":
+      return { ...state, resetOnUpload: !state.resetOnUpload };
     case "REMOVE_ALL_UPLOAD_DATA":
       return { ...state, uploadData: [] };
   }
 };
 
-const INIT_STATE = {
+const INIT_STATE: State = {
   uploadData: [],
   stageData: null,
+  resetOnUpload: false,
 };
 
 export type { UploadData, UploadFileType, Language, State, Action, Region };

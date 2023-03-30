@@ -85,4 +85,42 @@ class Updater {
   }
 }
 
-export { Updater };
+const ServerConfig = {
+  Develop: {
+    host: "minio.dev2.vnclever.com",
+    port: 443,
+    useSSL: true,
+  },
+  Egypt: {
+    host: "minio.eg2.dentalclever.com",
+    port: 443,
+    useSSL: true,
+  },
+  "Egypt-QA": {
+    host: "minio.clever2-qa-egypt.vsmart00.com",
+    port: 443,
+    useSSL: true,
+  },
+  Vietnam: {
+    host: "localhost",
+    port: 443,
+    useSSL: true,
+  },
+  "Vietnam-QA": {
+    host: "minio.vnm2.vnclever.com",
+    port: 443,
+    useSSL: true,
+  },
+  Russia: {
+    host: "localhost",
+    port: 443,
+    useSSL: true,
+  },
+  "Russia-QA": {
+    host: "minio.rus2.vnclever.com",
+    port: 443,
+    useSSL: true,
+  },
+};
+
+export { Updater, ServerConfig };

@@ -24,14 +24,17 @@
     "electron-progressbar": "^2.0.1",
     "electron-updater": "^5.3.0",
     "immer": "^9.0.21",
+    "minio": "^7.0.33",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
-    "regenerator-runtime": "^0.13.11"
+    "regenerator-runtime": "^0.13.11",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/electron-progressbar": "^1.2.2",
+    "@types/minio": "^7.0.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/regenerator-runtime": "^0.13.1",

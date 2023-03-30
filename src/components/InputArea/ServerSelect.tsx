@@ -15,7 +15,7 @@ const SERVER_LIST: Region[] = [
   "Vietnam-QA",
   "Russia",
   "Russia-QA",
-  "develop",
+  "Develop",
 ];
 
 const ServerSelect = (props: Props) => {
