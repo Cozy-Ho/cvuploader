@@ -9,7 +9,6 @@ type Props = {
 };
 
 const SERVER_LIST: Region[] = [
-  "all",
   "Egypt",
   "Egypt-QA",
   "Vietnam",
@@ -22,8 +21,7 @@ const SERVER_LIST: Region[] = [
 const ServerSelect = (props: Props) => {
   const { state, handleDispatch } = props;
   //
-  const handleOnChange = (value: Region[], click: Region) => {
-    console.log(" >> e.target.value ", click);
+  const handleOnChange = (value: Region[]) => {
     handleDispatch({
       type: "UPDATE_STAGE_DATA",
       data: {

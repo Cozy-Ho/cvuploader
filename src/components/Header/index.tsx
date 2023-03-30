@@ -18,7 +18,6 @@ const HeaderButton = styled("div")<{ width?: React.CSSProperties["width"] }>(
 );
 
 const Header = () => {
-  console.log("# ", location.pathname);
   //
   return (
     <Stack
