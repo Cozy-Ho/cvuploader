@@ -48,6 +48,8 @@ ipcMain.on("upload-file", async (event, arg) => {
         "dentalclever-documents",
         `${arg.type}_${arg.lang}.pdf`,
         fileContent,
+        fileContent.length,
+        { "content-type": "application/pdf" },
       );
       console.log("result # ", result);
     }
