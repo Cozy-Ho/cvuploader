@@ -2,6 +2,11 @@ import { useRef, useState } from "react";
 import Stack from "../Stack";
 import { Action, State } from "@/AppReducer";
 
+type ValidateResult = {
+  isError: boolean;
+  message?: string;
+};
+
 type Props = {
   state: State;
   handleDispatch: (action: Action) => void;
@@ -15,10 +20,14 @@ const SelectFile = (props: Props) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const validateFiles = (input: FileList): boolean => {
+  const validateFiles = (input: FileList): ValidateResult => {
     if (input.length > 1) {
-      return false;
+      return { isError: true, message: "파일은 하나씩!" };
     }
+    if (!input[0].name.includes(".pdf")) {
+      return { isError: true, message: "PDF 파일만!" };
+    }
+    return { isError: false };
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -28,13 +37,17 @@ const SelectFile = (props: Props) => {
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     //
-    console.log("드랍!", e.dataTransfer.files);
     const files = e.dataTransfer.files;
-    setIsDragging(false);
-    if (files.length > 1) {
-      alert(`파일은 하나씩 !`);
+    const validate = validateFiles(files);
+    if (validate.isError) {
+      if (validate.message) {
+        alert(validate.message);
+        return;
+      }
+      alert("파일 에러!");
       return;
     }
+    setIsDragging(false);
     handleDispatch({
       type: "UPDATE_STAGE_DATA",
       data: {
@@ -52,6 +65,15 @@ const SelectFile = (props: Props) => {
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     //
+    const validate = validateFiles(e.target.files);
+    if (validate.isError) {
+      if (validate.message) {
+        alert(validate.message);
+        return;
+      }
+      alert("파일 에러!");
+      return;
+    }
     if (e.target.files.length) {
       // const inputFile = e.target.files[0];
       handleDispatch({
