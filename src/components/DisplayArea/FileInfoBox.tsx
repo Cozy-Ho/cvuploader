@@ -17,6 +17,7 @@ const FileInfoBox = (props: Props) => {
   useEffect(() => {
     ipcRenderer.send("upload-file", {
       file: data.file.path,
+      extension: data.file.name.split(".").pop(),
       type: data.type.key,
       lang: data.language,
       region: data.region,

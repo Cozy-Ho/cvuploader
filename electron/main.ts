@@ -15,11 +15,11 @@ if (process.env.NODE_ENV === "development" && envFound.error) {
 
 import { app, BrowserWindow, ipcMain } from "electron";
 import fs from "fs";
+import * as minio from "minio";
 import path from "path";
 import "regenerator-runtime";
 import MenuBuilder from "./menu";
 import { resolveHtmlPath, ServerConfig, Updater } from "./util";
-import * as minio from "minio";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -32,6 +32,9 @@ ipcMain.on("ipc-example", async (event, arg) => {
 ipcMain.on("upload-file", async (event, arg) => {
   console.log("arg # ", arg);
   const fileContent: Buffer = fs.readFileSync(arg.file);
+  const extension: string = arg.extension;
+
+  const uploadFileName = `${arg.type}_${arg.lang}.${extension}`;
 
   try {
     for (let i = 0; i < arg.region.length; i++) {
@@ -46,10 +49,14 @@ ipcMain.on("upload-file", async (event, arg) => {
 
       const result = await minioClient.putObject(
         "dentalclever-documents",
-        `${arg.type}_${arg.lang}.pdf`,
+        uploadFileName,
         fileContent,
         fileContent.length,
-        { "content-type": "application/pdf" },
+        {
+          "content-type": extension.includes("xls")
+            ? "application/vnd.ms-excel"
+            : "application/pdf",
+        },
       );
       console.log("result # ", result);
     }

@@ -36,7 +36,7 @@ const StyledUl = styled("ul")({
   margin: 0,
   padding: 0,
   width: 300,
-  height: 350,
+  height: 400,
   fontSize: 14,
   color: "#fff",
   backgroundColor: "#292929",

@@ -12,6 +12,8 @@ type Props = {
   handleDispatch: (action: Action) => void;
 };
 
+const ACCEPT_FILE_TYPE = [".pdf", ".xls", ".xlsx"];
+
 const SelectFile = (props: Props) => {
   const { state, handleDispatch } = props;
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -24,8 +26,8 @@ const SelectFile = (props: Props) => {
     if (input.length > 1) {
       return { isError: true, message: "파일은 하나씩!" };
     }
-    if (!input[0].name.includes(".pdf")) {
-      return { isError: true, message: "PDF 파일만!" };
+    if (!ACCEPT_FILE_TYPE.some(v => !input[0].name.includes(v))) {
+      return { isError: true, message: "PDF or xlsx 파일만!" };
     }
     return { isError: false };
   };
@@ -74,6 +76,7 @@ const SelectFile = (props: Props) => {
       alert("파일 에러!");
       return;
     }
+    console.log("# check : ", e.target.files);
     if (e.target.files.length) {
       // const inputFile = e.target.files[0];
       handleDispatch({
@@ -138,7 +141,7 @@ const SelectFile = (props: Props) => {
       )}
       <input
         ref={inputRef}
-        accept={".pdf"}
+        accept={ACCEPT_FILE_TYPE.join(", ")}
         hidden={true}
         type={"file"}
         multiple={false}

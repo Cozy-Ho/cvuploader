@@ -1,7 +1,6 @@
 import { Action, Region, State } from "@/AppReducer";
-import Stack from "../Stack";
-import Select, { SelectType } from "../Select";
 import ServerMultiSelect from "../ServerMultiSelect";
+import Stack from "../Stack";
 
 type Props = {
   state: State;
@@ -10,6 +9,7 @@ type Props = {
 
 const SERVER_LIST: Region[] = [
   "Egypt",
+  "Egy",
   "Egypt-QA",
   "Vietnam",
   "Vietnam-QA",

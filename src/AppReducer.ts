@@ -2,6 +2,7 @@ type Language = "en" | "eg" | "ru" | "vn";
 type Region =
   | "all"
   | "Egypt"
+  | "Egy"
   | "Egypt-QA"
   | "Vietnam"
   | "Vietnam-QA"
@@ -18,6 +19,7 @@ const UploadFileList = [
   { key: "installation", value: "installation (설치프로그램)" },
   { key: "smtp", value: "smtp (SMTP 설정)" },
   { key: "manager_smtp", value: "manager smtp (매니저 SMTP 설정)" },
+  { key: "item_batch", value: "Batch register file (재고관리 초기값 설정)" },
   { key: "clever", value: "Clever (유저 매뉴얼)" },
   { key: "cyber_lotus", value: "cyberLotus (Zalo)" },
   { key: "viewer", value: "viewer (뷰어)" },

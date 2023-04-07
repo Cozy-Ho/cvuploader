@@ -31,7 +31,8 @@ const DisplayArea = (props: Props) => {
       alignItems={"center"}
       padding={16}
       style={{
-        overflowY: "scroll",
+        overflowY: "auto",
+        overflowX: "hidden",
       }}
     >
       <div>{"Done # "}</div>

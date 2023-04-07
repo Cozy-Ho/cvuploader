@@ -91,6 +91,11 @@ const ServerConfig = {
     port: 443,
     useSSL: true,
   },
+  Egy: {
+    host: "minio.egy.dentalclever.com",
+    port: 443,
+    useSSL: true,
+  },
   Egypt: {
     host: "minio.eg2.dentalclever.com",
     port: 443,
