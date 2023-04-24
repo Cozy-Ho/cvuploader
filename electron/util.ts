@@ -3,10 +3,20 @@ import { URL } from "url";
 import path from "path";
 import ProgressBar from "electron-progressbar";
 import { autoUpdater } from "electron-updater";
-import { dialog } from "electron";
+import { app, dialog } from "electron";
 import log from "electron-log";
+import pjson from "../package.json";
 
-export let resolveHtmlPath: (htmlFileName: string) => string;
+const VERSION = pjson.version;
+
+const getDataPath = () => {
+  const isDev = Boolean(process.env.NODE_ENV === "development");
+  if (isDev) {
+    return path.join(__dirname, "./");
+  }
+  return path.join(app.getPath("userData"), "data");
+};
+let resolveHtmlPath: (htmlFileName: string) => string;
 
 if (process.env.NODE_ENV === "development") {
   const port = process.env.PORT || 9702;
@@ -21,11 +31,19 @@ if (process.env.NODE_ENV === "development") {
   };
 }
 
+/**
+ * Logger setting
+ */
+log.transports.file.resolvePath = () =>
+  path.join(getDataPath(), "logs/main.log");
+
+log.transports.console.format = "{h}:{i}:{s}:{ms} {text}";
+log.transports.file.level = "info";
+const Log = log.scope("main");
+
 class Updater {
   private progressBar: ProgressBar = null;
   constructor() {
-    log.transports.file.level = "info";
-
     autoUpdater.logger = log;
 
     autoUpdater.forceDevUpdateConfig = true;
@@ -53,11 +71,11 @@ class Updater {
 
       this.progressBar
         .on("completed", function () {
-          console.info(`completed...`);
+          Log.info(`completed...`);
           this.progressBar.detail = "Task completed. Exiting...";
         })
         .on("aborted", function () {
-          console.info(`aborted...`);
+          Log.info(`aborted...`);
         });
     });
 
@@ -78,7 +96,7 @@ class Updater {
     });
 
     autoUpdater.on("error", err => {
-      log.error("auto-updater error! >>>", err);
+      Log.error("auto-updater error! >>>", err);
     });
 
     autoUpdater.checkForUpdatesAndNotify();
@@ -128,4 +146,4 @@ const ServerConfig = {
   },
 };
 
-export { Updater, ServerConfig };
+export { Updater, Log, VERSION, ServerConfig, getDataPath, resolveHtmlPath };

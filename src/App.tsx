@@ -20,7 +20,7 @@ function App() {
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <Header />
+      {/* <Header /> */}
       <Main state={state} handleDispatch={handleDispatch} />
     </Stack>
   );

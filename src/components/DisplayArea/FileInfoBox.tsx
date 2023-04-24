@@ -1,6 +1,8 @@
 import { UploadData } from "@/AppReducer";
 import Stack from "../Stack";
-import { useEffect, useState } from "react";
+import { v4 } from "uuid";
+import { useEffect, useRef, useState } from "react";
+
 const { ipcRenderer } = require("electron");
 
 type Props = {
@@ -10,12 +12,19 @@ type Props = {
 const FileInfoBox = (props: Props) => {
   const { data } = props;
 
+  const uploadId = useRef<string>(v4());
   const [uploadStatus, setUploadStatus] = useState<
     "pending" | "success" | "fail"
   >("pending");
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
+    if (!uploadId.current) return;
+
+    console.log("check id", uploadId.current);
+    setUploadStatus("pending");
     ipcRenderer.send("upload-file", {
+      id: uploadId.current,
       file: data.file.path,
       extension: data.file.name.split(".").pop(),
       type: data.type.key,
@@ -23,20 +32,26 @@ const FileInfoBox = (props: Props) => {
       region: data.region,
     });
 
-    ipcRenderer.on("upload-done", (event: any, arg: any) => {
-      setUploadStatus("success");
-      console.log("upload success");
-    });
-    ipcRenderer.on("upload-faile", (event: any, arg: any) => {
-      setUploadStatus("fail");
-      console.log("upload failed");
-    });
+    ipcRenderer.on(
+      `upload-done-${uploadId.current}`,
+      (event: any, arg: any) => {
+        setUploadStatus("success");
+        console.log("upload success");
+      },
+    );
+    ipcRenderer.on(
+      `upload-fail-${uploadId.current}`,
+      (event: any, arg: any) => {
+        setUploadStatus("fail");
+        console.log("upload failed");
+      },
+    );
 
     return () => {
       ipcRenderer.removeAllListeners("upload-done");
       ipcRenderer.removeAllListeners("upload-faile");
     };
-  }, [setUploadStatus]);
+  }, [setUploadStatus, uploadId.current]);
 
   return (
     <>

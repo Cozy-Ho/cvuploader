@@ -19,7 +19,7 @@ import * as minio from "minio";
 import path from "path";
 import "regenerator-runtime";
 import MenuBuilder from "./menu";
-import { resolveHtmlPath, ServerConfig, Updater } from "./util";
+import { resolveHtmlPath, ServerConfig, Updater, VERSION } from "./util";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -31,6 +31,9 @@ ipcMain.on("ipc-example", async (event, arg) => {
 
 ipcMain.on("upload-file", async (event, arg) => {
   console.log("arg # ", arg);
+  const fileId = arg.id;
+  if (!fileId) return;
+
   const fileContent: Buffer = fs.readFileSync(arg.file);
   const extension: string = arg.extension;
 
@@ -60,9 +63,9 @@ ipcMain.on("upload-file", async (event, arg) => {
       );
       console.log("result # ", result);
     }
-    event.reply("upload-done", "done");
+    event.reply(`upload-done-${fileId}`, "done");
   } catch (e) {
-    event.reply("upload-fail", "fail");
+    event.reply(`upload-fail-${fileId}`, "fail");
   }
 });
 
@@ -111,6 +114,7 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 720,
+    resizable: false,
     icon: getAssetPath("icon.png"),
     webPreferences: {
       nodeIntegration: true,
@@ -157,6 +161,14 @@ const createWindow = async () => {
 /**
  * Add event listeners...
  */
+
+app.setAboutPanelOptions({
+  applicationName: "cvuploader",
+  applicationVersion: VERSION,
+  copyright: "© 2023 all rights reserved.",
+  version: VERSION,
+  authors: ["kj2693119@gmail.com"],
+});
 
 app.on("window-all-closed", () => {
   // Respect the OSX convention of having the application in memory even
