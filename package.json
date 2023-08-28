@@ -1,7 +1,7 @@
 {
   "name": "cvuploader",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.5",
   "main": "./build/main.js",
   "homepage": ".",
   "scripts": {
@@ -13,7 +13,7 @@
     "build": "run-s build:clean build:main build:renderer build:env",
     "preview": "vite preview",
     "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./electron/main.ts",
-    "package": "yarn build && electron-builder -mw --publish never",
+    "package": "yarn build && electron-builder -wm",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
@@ -22,14 +22,14 @@
     "dotenv": "^16.0.3",
     "electron-log": "^4.4.8",
     "electron-progressbar": "^2.0.1",
-    "electron-updater": "^5.3.0",
-    "immer": "^9.0.21",
+    "electron-updater": "^6.1.1",
+    "immer": "^10.0.2",
     "minio": "^7.0.33",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
-    "regenerator-runtime": "^0.13.11",
+    "regenerator-runtime": "^0.14.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -40,21 +40,24 @@
     "@types/regenerator-runtime": "^0.13.1",
     "@types/source-map-support": "^0.5.6",
     "@types/uuid": "^9.0.1",
-    "@vitejs/plugin-react": "^3.0.0",
+    "@vitejs/plugin-react": "^4.0.4",
     "cross-env": "^7.0.3",
-    "electron": "^22.0.0",
-    "electron-builder": "^23.6.0",
+    "electron": "^26.1.0",
+    "electron-builder": "^24.6.3",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.2.0",
     "npm-run-all": "^4.1.5",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.3",
+    "typescript": "^5.2.2",
     "vite": "^4.0.0"
   },
   "build": {
     "productName": "cvuploader",
     "appId": "com.vatech.cvuploader",
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "./build",
       ".env"

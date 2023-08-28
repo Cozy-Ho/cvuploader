@@ -5,9 +5,6 @@ import ProgressBar from "electron-progressbar";
 import { autoUpdater } from "electron-updater";
 import { app, dialog } from "electron";
 import log from "electron-log";
-import pjson from "../package.json";
-
-const VERSION = pjson.version;
 
 const getDataPath = () => {
   const isDev = Boolean(process.env.NODE_ENV === "development");
@@ -46,25 +43,30 @@ class Updater {
   constructor() {
     autoUpdater.logger = log;
 
-    autoUpdater.forceDevUpdateConfig = true;
+    // autoUpdater.forceDevUpdateConfig = true;
 
     autoUpdater.on("update-available", () => {
       dialog
         .showMessageBox({
           type: "info",
           title: "update available",
+          defaultId: 0,
+          cancelId: 1,
           message:
             "A new version of Project is available. Do you want to update now?",
-          buttons: ["update", "later"],
+          buttons: ["Update", "Later"],
         })
         .then(result => {
           const buttonIndex = result.response;
+          Log.debug(`buttonIndex: ${buttonIndex}`);
           if (buttonIndex === 0) autoUpdater.downloadUpdate();
         });
     });
 
     autoUpdater.once("download-progress", progressObj => {
+      Log.debug("download start!");
       this.progressBar = new ProgressBar({
+        indeterminate: false,
         text: "Downloading...",
         detail: "Downloading...",
       });
@@ -76,6 +78,9 @@ class Updater {
         })
         .on("aborted", function () {
           Log.info(`aborted...`);
+        })
+        .on("progress", function () {
+          this.progressBar.detail = `Downloaded ${progressObj.percent}%`;
         });
     });
 
@@ -86,6 +91,8 @@ class Updater {
           type: "info",
           title: "Update ready",
           message: "Install & restart now?",
+          defaultId: 0,
+          cancelId: 1,
           buttons: ["Restart", "Later"],
         })
         .then(result => {
@@ -146,4 +153,4 @@ const ServerConfig = {
   },
 };
 
-export { Updater, Log, VERSION, ServerConfig, getDataPath, resolveHtmlPath };
+export { Updater, Log, ServerConfig, getDataPath, resolveHtmlPath };

@@ -19,7 +19,7 @@ import * as minio from "minio";
 import path from "path";
 import "regenerator-runtime";
 import MenuBuilder from "./menu";
-import { resolveHtmlPath, ServerConfig, Updater, VERSION } from "./util";
+import { resolveHtmlPath, ServerConfig, Updater } from "./util";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -164,9 +164,9 @@ const createWindow = async () => {
 
 app.setAboutPanelOptions({
   applicationName: "cvuploader",
-  applicationVersion: VERSION,
+  applicationVersion: app.getVersion(),
   copyright: "© 2023 all rights reserved.",
-  version: VERSION,
+  version: app.getVersion(),
   authors: ["kj2693119@gmail.com"],
 });
 

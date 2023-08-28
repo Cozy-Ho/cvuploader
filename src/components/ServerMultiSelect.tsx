@@ -1,7 +1,7 @@
 import { Region } from "@/AppReducer";
 import styled from "@emotion/styled";
+import { produce } from "immer";
 import { useEffect, useState } from "react";
-import produce from "immer";
 
 const StyledSelect = styled("div")({
   position: "relative",
