@@ -135,7 +135,7 @@ const createWindow = async () => {
       mainWindow.show();
     }
     // Open Dev tools when packaged.
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   });
 
   mainWindow.on("closed", () => {
@@ -182,6 +182,7 @@ app.on("window-all-closed", () => {
 app
   .whenReady()
   .then(() => {
+    console.log("ready to show!");
     createWindow();
 
     // Remove this if your app does not use auto updates

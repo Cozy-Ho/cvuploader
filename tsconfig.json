@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es5",
     "lib": ["DOM", "es2017", "esnext.asynciterable"],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "CommonJS",
     "pretty": true,
     "sourceMap": false,
     "outDir": "./build",
@@ -22,8 +22,14 @@
     "strict": false,
     "incremental": true,
     "resolveJsonModule": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src", "electron"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "electron", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
