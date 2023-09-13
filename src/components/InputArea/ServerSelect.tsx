@@ -1,6 +1,6 @@
 import { Action, Region, State } from "@/AppReducer";
 import ServerMultiSelect from "../ServerMultiSelect";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 
 type Props = {
   state: State;

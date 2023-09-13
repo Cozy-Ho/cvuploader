@@ -1,5 +1,5 @@
 import ContentsBox from "../ContentsBox";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 
 const LocaleUpload = () => {
   //

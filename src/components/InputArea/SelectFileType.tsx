@@ -1,6 +1,6 @@
 import { Action, State, UploadFileList, UploadFileType } from "@/AppReducer";
 import Select from "../Select";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 
 type Props = {
   state: State;

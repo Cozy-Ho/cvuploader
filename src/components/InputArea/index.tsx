@@ -1,6 +1,6 @@
 import { Action, State } from "@/AppReducer";
 import styled from "@emotion/styled";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 import LanguageSelect from "./LanguageSelect";
 import SelectFile from "./SelectFile";
 import SelectFileType from "./SelectFileType";

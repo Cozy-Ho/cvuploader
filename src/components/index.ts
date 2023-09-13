@@ -5,7 +5,7 @@ import LocaleUpload from "./LocaleUpload";
 import Main from "./Main";
 import InputArea from "./InputArea";
 import NotFound from "./NotFound";
-import Stack from "./Stack";
+import Stack from "./Common/Stack";
 
 export {
   ContentsBox,

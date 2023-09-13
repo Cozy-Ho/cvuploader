@@ -1,9 +1,9 @@
 import { UploadData } from "@/AppReducer";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 import { v4 } from "uuid";
 import { useEffect, useRef, useState } from "react";
 
-const { ipcRenderer } = require("electron");
+const { ipcRenderer } = window.require("electron");
 
 type Props = {
   data: UploadData;

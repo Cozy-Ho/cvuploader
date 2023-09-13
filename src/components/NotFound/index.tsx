@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import ContentsBox from "../ContentsBox";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 
 const NotFound = () => {
   //

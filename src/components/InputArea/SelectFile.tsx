@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 import { Action, State } from "@/AppReducer";
 
 type ValidateResult = {

@@ -1,5 +1,5 @@
 import { Action, Language, State } from "@/AppReducer";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 import Select, { SelectType } from "../Select";
 
 type Props = {

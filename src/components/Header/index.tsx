@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 
 const HeaderButton = styled("div")<{ width?: React.CSSProperties["width"] }>(
   ({ width }) => ({

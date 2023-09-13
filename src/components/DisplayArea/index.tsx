@@ -1,5 +1,5 @@
 import { State } from "@/AppReducer";
-import Stack from "../Stack";
+import Stack from "../Common/Stack";
 import styled from "@emotion/styled";
 import FileInfoBox from "./FileInfoBox";
 

@@ -1,9 +1,11 @@
 import { Header, Main, Stack } from "@/components";
 import { useCallback, useEffect, useReducer } from "react";
 import { Action, INIT_STATE, reducer } from "./AppReducer";
+const { ipcRenderer } = window.require("electron");
 
 function App() {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
+  ipcRenderer.send("ipc-example", "ping");
 
   const handleDispatch = useCallback(
     (action: Action) => {
@@ -11,6 +13,14 @@ function App() {
     },
     [dispatch],
   );
+  useEffect(() => {
+    ipcRenderer.on("ipc-example", (event, args) => {
+      console.log(args);
+    });
+    return () => {
+      ipcRenderer.removeAllListeners("ipc-example");
+    };
+  }, []);
 
   return (
     <Stack

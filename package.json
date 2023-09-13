@@ -5,6 +5,7 @@
   "main": "./build/main.js",
   "homepage": ".",
   "scripts": {
+    "test": "jest",
     "dev": "vite",
     "build:clean": "rm -rf ./build",
     "build:main": "tsc --build ./electron",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@types/electron-progressbar": "^1.2.2",
+    "@types/jest": "^29.5.4",
     "@types/minio": "^7.0.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
@@ -46,7 +48,9 @@
     "electron-builder": "^24.6.3",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.2.0",
+    "jest": "^29.6.4",
     "npm-run-all": "^4.1.5",
+    "ts-jest": "^29.1.1",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
