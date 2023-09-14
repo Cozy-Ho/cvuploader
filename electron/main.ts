@@ -19,6 +19,8 @@ import * as minio from "minio";
 import path from "path";
 import "regenerator-runtime";
 import MenuBuilder from "./menu";
+import isDev from "electron-is-dev";
+import prepareRednerer from "electron-next";
 import { resolveHtmlPath, ServerConfig, Updater } from "./util";
 
 let mainWindow: BrowserWindow | null = null;
@@ -76,12 +78,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// FIXME: 개발용
-const isDevelopment =
-  process.env.NODE_ENV === "development" || process.env.DEBUG_PROD === "true";
-
-if (isDevelopment) {
-  //
+if (isDev) {
   import("electron-debug").then(res => {
     res.default();
   });
@@ -101,7 +98,7 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  if (isDevelopment) {
+  if (isDev) {
     await installExtensions();
   }
 
@@ -181,8 +178,10 @@ app.on("window-all-closed", () => {
 
 app
   .whenReady()
-  .then(() => {
+  .then(async () => {
+    await prepareRednerer("./renderer");
     console.log("ready to show!");
+
     createWindow();
 
     // Remove this if your app does not use auto updates

@@ -1,13 +1,13 @@
 /* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
-import { URL } from "url";
+import { URL, format } from "url";
 import path from "path";
 import ProgressBar from "electron-progressbar";
 import { autoUpdater } from "electron-updater";
 import { app, dialog } from "electron";
+import isDev from "electron-is-dev";
 import log from "electron-log";
 
 const getDataPath = () => {
-  const isDev = Boolean(process.env.NODE_ENV === "development");
   if (isDev) {
     return path.join(__dirname, "./");
   }
@@ -24,7 +24,11 @@ if (process.env.NODE_ENV === "development") {
   };
 } else {
   resolveHtmlPath = (htmlFileName: string) => {
-    return `file://${path.join(__dirname, htmlFileName)}`;
+    return format({
+      protocol: "file:",
+      slashes: true,
+      pathname: path.join(__dirname, `../renderer/out/${htmlFileName}`),
+    });
   };
 }
 

@@ -2,29 +2,30 @@
   "name": "cvuploader",
   "version": "0.1.0",
   "private": true,
-  "main": "./build/main.js",
+  "main": "build/main.js",
   "scripts": {
     "test": "jest",
-    "dev": "next dev",
+    "dev": "next dev renderer",
     "build:clean": "rm -rf ./build",
     "build:main": "tsc --build ./electron",
     "build:env": "cp -av .env ./build",
-    "build:renderer": "next build",
-    "build:copy": "cp -av ./out/ ./build",
-    "build": "run-s build:clean build:main build:renderer build:env build:copy",
-    "start": "next start",
+    "build:renderer": "next build renderer",
+    "build": "run-s build:clean build:main build:renderer build:env",
+    "start": "next start renderer",
     "start:renderer": "next dev -p 9702",
     "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./electron/main.ts",
-    "package": "yarn build && electron-builder -wm",
+    "package": "yarn build && electron-builder -m",
     "postinstall": "electron-builder install-app-deps",
-    "lint": "next lint"
+    "lint": "next lint renderer"
   },
   "packageManager": "yarn@3.6.3",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "dotenv": "^16.3.1",
+    "electron-is-dev": "^2.0.0",
     "electron-log": "^4.4.8",
+    "electron-next": "^3.1.5",
     "electron-progressbar": "^2.1.0",
     "electron-updater": "^6.1.4",
     "minio": "^7.1.3",
@@ -37,6 +38,7 @@
     "regenerator-runtime": "^0.14.0"
   },
   "devDependencies": {
+    "@types/electron-progressbar": "^1.2.3",
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -61,9 +63,8 @@
       "provider": "github"
     },
     "files": [
-      "./build/**/*",
-      ".env",
-      "package.json"
+      "build",
+      "renderer/out"
     ],
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
@@ -109,7 +110,6 @@
       "category": "Development"
     },
     "directories": {
-      "buildResources": "./build/**/*",
       "output": "./release"
     }
   },
